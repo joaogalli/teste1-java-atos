@@ -10,7 +10,7 @@ import {HttpClient} from "@angular/common/http";
 export class AppComponent implements OnInit {
   skillsForm: FormGroup;
   skillsOnFilter = [];
-  employees = [];
+  employees: Object[] = [];
   noEmployeesFound = false;
 
   constructor(private htmlClient: HttpClient) {}
@@ -43,12 +43,9 @@ export class AppComponent implements OnInit {
 
     this.htmlClient.post('http://localhost:8080/api/employee/findEmployeesBySkill', requestBody)
       .subscribe(value => {
-        console.info(value);
-        this.employees = value;
-        console.info(this.employees);
+        this.employees = value as Array<String>;
         this.noEmployeesFound = this.employees.length <= 0;
-      }, error2 => {
-        console.error(error2);
+      }, error => {
         this.employees = [];
         this.noEmployeesFound = true;
       });
