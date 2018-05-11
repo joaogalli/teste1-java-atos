@@ -8,38 +8,32 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  skillsForm: FormGroup;
-  skillsOnFilter = [];
+  skills: {value: String, checked: boolean}[] = [];
   employees: Object[] = [];
   noEmployeesFound = false;
+  noSkillsFound = false;
 
   constructor(private htmlClient: HttpClient) {}
 
   ngOnInit(): void {
-    this.skillsForm = new FormGroup({
-      'skill': new FormControl(null, [Validators.required] )
-    });
-  }
-
-  onAddSkill() {
-    let skill = this.skillsForm.value.skill
-
-
-    let exists = this.skillsOnFilter.some(skillExists(skill));
-
-    if (skill && !exists) {
-      this.skillsOnFilter.push(skill);
-      this.skillsForm.reset();
-    }
-  }
-
-  removeSkill(skill) {
-    let indexOf = this.skillsOnFilter.indexOf(skill);
-    this.skillsOnFilter.splice(indexOf, 1);
+    this.htmlClient.get('http://localhost:8080/api/employee/getSkills')
+      .subscribe(value => {
+        (value as Array<String>).forEach(value2 => {
+          this.skills.push({ value: value2, checked: false});
+        });
+        this.noSkillsFound = this.skills.length <= 0;
+      }, error => {
+        this.skills = [];
+        this.noSkillsFound = true;
+      });
   }
 
   onFilter() {
-    let requestBody = { skills: this.skillsOnFilter };
+    let selectedSkills = this.skills
+      .filter(opt => opt.checked)
+      .map(opt => opt.value);
+
+    let requestBody = { skills: selectedSkills };
 
     this.htmlClient.post('http://localhost:8080/api/employee/findEmployeesBySkill', requestBody)
       .subscribe(value => {
@@ -49,11 +43,5 @@ export class AppComponent implements OnInit {
         this.employees = [];
         this.noEmployeesFound = true;
       });
-  }
-}
-
-function skillExists(skill) {
-  return function skillAlreadyExist(element, index, array) {
-    return (element === skill);
   }
 }
