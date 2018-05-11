@@ -1,5 +1,8 @@
 package joaogalli.atos.teste1;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import joaogalli.atos.teste1.model.Employee;
 import joaogalli.atos.teste1.model.Project;
 import joaogalli.atos.teste1.repository.EmployeeRepository;
@@ -16,7 +19,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,16 +46,25 @@ public class Teste1Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		employeeRepository.deleteAll();
 
-		employeeRepository.save(build("João", "Java Developer", "10000.00", "java", "oracle", "android"));
-		employeeRepository.save(build("Orlando", "Java Developer", "500", "java", "mysql"));
-		employeeRepository.save(build("André", "Mobile Developer", "5000", "android", "ios"));
+//		employeeRepository.save(build("João", "Java Developer", "10000.00", "java", "oracle", "android"));
+//		employeeRepository.save(build("Orlando", "Java Developer", "500", "java", "mysql"));
+//		employeeRepository.save(build("André", "Mobile Developer", "5000", "android", "ios"));
+
+		Type REVIEW_TYPE = new TypeToken<List<Employee>>() {}.getType();
+		Gson gson = new Gson();
+
+		InputStream in = getClass().getResourceAsStream("/employees.txt");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		JsonReader jsonreader = new JsonReader(reader);
+		List<Employee> data = gson.fromJson(jsonreader, REVIEW_TYPE);
+		data.stream().forEach(employeeRepository::save);
 	}
 
 	public Employee build(String name, String role, String salary, String... skills) {
 		Employee e = new Employee();
 		e.setName(name);
 		e.setRole(role);
-		e.setSalary(new BigDecimal(salary));
+		e.setSalary(salary);
 		e.getSkills().addAll(Arrays.asList(skills));
 		e.getProjects().add(new Project("Project 1", "Customer 1", "1.000.000,00", "2016-11-05T08:15:30-05:00", "2017-11-05T08:15:30-05:00"));
 

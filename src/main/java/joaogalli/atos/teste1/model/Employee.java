@@ -15,11 +15,17 @@ public class Employee {
 
     private String role;
 
-    private BigDecimal salary;
+    private String salary;
+
+    private String manager;
+
+    private String gcm;
 
     private List<String> skills = new ArrayList<>();
 
     private List<Project> projects = new ArrayList<>();
+
+    private List<String> certification;
 
     @Override
     public String toString() {
@@ -53,11 +59,11 @@ public class Employee {
         this.role = role;
     }
 
-    public BigDecimal getSalary() {
+    public String getSalary() {
         return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
+    public void setSalary(String salary) {
         this.salary = salary;
     }
 
@@ -75,5 +81,29 @@ public class Employee {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    public String getGcm() {
+        return gcm;
+    }
+
+    public void setGcm(String gcm) {
+        this.gcm = gcm;
+    }
+
+    public List<String> getCertification() {
+        return certification;
+    }
+
+    public void setCertification(List<String> certification) {
+        this.certification = certification;
     }
 }
