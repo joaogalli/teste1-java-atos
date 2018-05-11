@@ -1,7 +1,7 @@
 package joaogalli.atos.teste1.controller;
 
 import joaogalli.atos.teste1.model.Employee;
-import joaogalli.atos.teste1.repository.EmployeeRepository;
+import joaogalli.atos.teste1.repository.EmployeeInMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeInMemoryRepository employeeRepository;
 
     @RequestMapping(value = "/getAllEmployees", method = RequestMethod.GET)
     public List<Employee> getAllEmployees() {

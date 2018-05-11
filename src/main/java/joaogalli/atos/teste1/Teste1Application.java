@@ -1,11 +1,9 @@
 package joaogalli.atos.teste1;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
+import joaogalli.atos.teste1.importer.EmployeeFile2JsonParser;
 import joaogalli.atos.teste1.model.Employee;
 import joaogalli.atos.teste1.model.Project;
-import joaogalli.atos.teste1.repository.EmployeeRepository;
+import joaogalli.atos.teste1.repository.EmployeeInMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,19 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +22,10 @@ import java.util.List;
 public class Teste1Application implements CommandLineRunner {
 
 	@Autowired
-	private EmployeeRepository employeeRepository;
+	private EmployeeInMemoryRepository employeeRepository;
+
+	@Autowired
+	private EmployeeFile2JsonParser employeeFile2JsonParser;
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -46,17 +38,7 @@ public class Teste1Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		employeeRepository.deleteAll();
 
-//		employeeRepository.save(build("João", "Java Developer", "10000.00", "java", "oracle", "android"));
-//		employeeRepository.save(build("Orlando", "Java Developer", "500", "java", "mysql"));
-//		employeeRepository.save(build("André", "Mobile Developer", "5000", "android", "ios"));
-
-		Type REVIEW_TYPE = new TypeToken<List<Employee>>() {}.getType();
-		Gson gson = new Gson();
-
-		InputStream in = getClass().getResourceAsStream("/employees.txt");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		JsonReader jsonreader = new JsonReader(reader);
-		List<Employee> data = gson.fromJson(jsonreader, REVIEW_TYPE);
+		List<Employee> data = employeeFile2JsonParser.parseInternalFile("/employees.txt");
 		data.stream().forEach(employeeRepository::save);
 	}
 
