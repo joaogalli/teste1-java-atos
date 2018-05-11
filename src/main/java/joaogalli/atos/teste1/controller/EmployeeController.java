@@ -3,7 +3,6 @@ package joaogalli.atos.teste1.controller;
 import joaogalli.atos.teste1.model.Employee;
 import joaogalli.atos.teste1.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +23,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/findEmployeesBySkill", method = RequestMethod.POST)
-    public List<Employee> findBySkill(@RequestBody FindEmployeesBySkillsFilter filter) {
+    public List<Employee> findBySkill(@RequestBody FindEmployeesBySkillsFilterRequestBody filter) {
         return employeeRepository.findBySkillsIn(filter.getSkills());
     }
 

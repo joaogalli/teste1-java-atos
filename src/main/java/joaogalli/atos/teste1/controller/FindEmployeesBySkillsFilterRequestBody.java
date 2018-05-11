@@ -2,7 +2,7 @@ package joaogalli.atos.teste1.controller;
 
 import java.util.List;
 
-public class FindEmployeesBySkillsFilter {
+public class FindEmployeesBySkillsFilterRequestBody {
 
     private List<String> skills;
 

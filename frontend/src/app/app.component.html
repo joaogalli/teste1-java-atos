@@ -1,24 +1,53 @@
-<h1>Test Java Atos</h1>
-<h3>Filtro</h3>
-<form [formGroup]="skillsForm" (ngSubmit)="onAddSkill()">
-    <label for="skill">Skill: </label>
-    <input
-      type="text"
-      id="skill"
-      formControlName="skill"
-      class="form-control">
-  <button class="btn btn-primary" type="submit">Adicionar</button>
-</form>
-
-<h3>Filtros adicionados</h3>
-<div>
-  <ul>
-    <li *ngFor="let skill of skillsOnFilter">
-      {{skill}} - <a class="deleteSkill" (click)="removeSkill(skill)">
-      <span class="glyphicon">&#xe020;</span>
-    </a>
-    </li>
-  </ul>
+<div class="page-header">
+  <h1>Test Java Atos <small>Consulta de Funcionários</small></h1>
 </div>
 
+<div class="panel panel-default">
+  <div class="panel-heading">Filtro</div>
+  <div class="panel-body">
+    <form [formGroup]="skillsForm" (ngSubmit)="onAddSkill()">
+      <label for="skill">Skill: </label>
+      <div class="input-group" style="width: 400px">
+        <input
+          type="text"
+          id="skill"
+          formControlName="skill"
+          class="form-control">
+        <span class="input-group-btn">
+          <button class="btn btn-success" type="submit">Adicionar</button>
+        </span>
+      </div>
+    </form>
+    <br/>
+    <span>Filtros adicionados</span>
+    <div>
+        <h4 *ngFor="let skill of skillsOnFilter">
+          <span class="label label-default">{{skill}}<a class="deleteSkill" style="color: white" (click)="removeSkill(skill)">
+          <span class="glyphicon">&#xe020;</span>
+        </a>
+            </span>
+        </h4>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="onFilter()">Filtrar</button>
+  </div>
+</div>
 
+<div class="panel panel-default">
+  <div class="panel-heading">Resultado da Pesquisa</div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+        <td>Nome</td>
+        <td>Cargo</td>
+        <td>Salário</td>
+      </thead>
+      <tr *ngFor="let employee of employees">
+        <td>{{employee.name}}</td>
+        <td>{{employee.role}}</td>
+        <td>R$ {{employee.salary}}</td>
+      </tr>
+    </table>
+
+    <div class="alert alert-warning" role="alert" *ngIf="noEmployeesFound">Nenhum funcionário encontrado para sua busca.</div>
+  </div>
+</div>
