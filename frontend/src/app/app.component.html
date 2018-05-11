@@ -5,21 +5,19 @@
 <div class="panel panel-default">
   <div class="panel-heading">Filtro</div>
   <div class="panel-body">
-    <form [formGroup]="skillsForm" (ngSubmit)="onAddSkill()">
-      <label for="skill">Skill: </label>
-      <div class="input-group" style="width: 400px">
-        <input
-          type="text"
-          id="skill"
-          formControlName="skill"
-          class="form-control">
-        <span class="input-group-btn">
-          <button class="btn btn-success" type="submit">Adicionar</button>
-        </span>
+    <div class="form-group">
+      <label for="skills">Skills:</label>
+      <div *ngFor="let option of skills">
+        <label>
+          <input type="checkbox"
+                 name="options"
+                 value="{{option.value}}"
+                 [(ngModel)]="option.checked"/>
+          {{option.value}}
+        </label>
       </div>
-    </form>
-    <br/>
-    <span>Filtros adicionados</span>
+    </div>
+
     <div>
         <h4 *ngFor="let skill of skillsOnFilter">
           <span class="label label-default">{{skill}}<a class="deleteSkill" style="color: white" (click)="removeSkill(skill)">

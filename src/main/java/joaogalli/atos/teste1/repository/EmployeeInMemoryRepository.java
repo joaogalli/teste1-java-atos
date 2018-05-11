@@ -3,16 +3,14 @@ package joaogalli.atos.teste1.repository;
 import joaogalli.atos.teste1.model.Employee;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class EmployeeInMemoryRepository {
 
     private List<Employee> repository = new ArrayList<>();
+    private List<Employee> skills;
 
     public void deleteAll() {
         repository.clear();
@@ -34,4 +32,13 @@ public class EmployeeInMemoryRepository {
                 .collect(Collectors.toList());
     }
 
+    public Collection<String> getSkills() {
+        Set<String> skills = new HashSet<>();
+
+        repository
+                .stream()
+                .forEach(e -> skills.addAll(e.getSkills()));
+
+        return skills;
+    }
 }

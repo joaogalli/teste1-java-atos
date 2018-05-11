@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 
 @RequestMapping("api/employee")
@@ -25,6 +26,11 @@ public class EmployeeController {
     @RequestMapping(value = "/findEmployeesBySkill", method = RequestMethod.POST)
     public List<Employee> findBySkill(@RequestBody FindEmployeesBySkillsFilterRequestBody filter) {
         return employeeRepository.findBySkillsIn(filter.getSkills());
+    }
+
+    @RequestMapping(value = "/getSkills", method = RequestMethod.GET)
+    public Collection<String> getSkills() {
+        return employeeRepository.getSkills();
     }
 
 }
