@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 public class EmployeeInMemoryRepository {
 
     private List<Employee> repository = new ArrayList<>();
-    private List<Employee> skills;
 
     public void deleteAll() {
         repository.clear();
